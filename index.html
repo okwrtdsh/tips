@@ -2,13 +2,15 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" type="text/css" href="https://sindresorhus.com/github-markdown-css/github-markdown.css" />
+  <!--link rel="stylesheet" type="text/css" href="https://sindresorhus.com/github-markdown-css/github-markdown.css" /-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/monokai-sublime.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script>
-  <script src="http://flowchart.js.org/flowchart-latest.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.3/flowchart.min.js"></script>
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       skipStartupTypeset: true,
@@ -25,6 +27,11 @@
     });
   </script>
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured"></script>
+  <style type="text/css">
+    pre code {
+      font-family: "Consolas", "Courier New", monospace;
+    }
+  </style>
 </head>
 <body>
   <div id="content" class="markdown-body"></div>
@@ -82,6 +89,9 @@ function main(){
   }).then(function(text){
     var html = marked(text);
     $("#content").html(html);
+    $("#content").find('pre code').each(function(i, block) {
+      hljs.highlightBlock(block);
+    });
   }).then(function(){
     $(".lang-math-inline").map(function(i, elm){
       var code = $(elm).children().html()
