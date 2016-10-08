@@ -11,13 +11,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.3/flowchart.min.js"></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured"></script>
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       skipStartupTypeset: true,
       extensions: ["tex2jax.js"],
       jax: ["input/TeX", "output/HTML-CSS"],
       tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        inlineMath: [ ['$$$','$$$'], ["\\(","\\)"] ],
         displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
         processEscapes: true
       },
@@ -26,7 +27,6 @@
       }
     });
   </script>
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured"></script>
   <style type="text/css">
     pre code {
       font-family: "Consolas", "Courier New", monospace;
@@ -79,7 +79,7 @@ function main(){
   }).then(function(text){
     var PREFIX = "<span class=\"lang-math-inline\">```";
     var SUFFIX = "```</span>";
-    var reg = /\$([^\r\n]+?)\$/g;
+    var reg = /\$\$([^\r\n]+?)\$\$/g;
     var _text = text;
     var tuple = null;
     while(tuple = reg.exec(text)){
@@ -89,9 +89,6 @@ function main(){
   }).then(function(text){
     var html = marked(text);
     $("#content").html(html);
-    $("#content").find('pre code').each(function(i, block) {
-      hljs.highlightBlock(block);
-    });
   }).then(function(){
     $(".lang-math-inline").map(function(i, elm){
       var code = $(elm).children().html()
@@ -127,6 +124,10 @@ function main(){
       var div = document.createElement("div");
       $(elm).parent().after(div).remove();
       flowchart.parse(code).drawSVG(div);
+    });
+  }).then(function(){
+    $("#content").find('pre code').each(function(i, block) {
+      hljs.highlightBlock(block);
     });
   }).catch(function(err){
     console.error(err, err.stack);
