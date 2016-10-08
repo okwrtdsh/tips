@@ -8,8 +8,8 @@ EMAIL_HOST_PASSWORD = 'yourpassword'     # 使用するgmailアカウントの�
 EMAIL_PORT = 587
 ```
 
-```shell
-> python manage.py shell
+```python
+$ python manage.py shell
 
 >>> from django.core.mail import send_mail
 
