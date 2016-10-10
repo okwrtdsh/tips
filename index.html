@@ -21,7 +21,7 @@
       extensions: ["tex2jax.js"],
       jax: ["input/TeX", "output/HTML-CSS"],
       tex2jax: {
-        inlineMath: [ ['$$$','$$$'], ["\\(","\\)"] ],
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
         displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
         processEscapes: true
       },
@@ -73,6 +73,16 @@ function main(){
   get(name).catch(function(){
     return "# 404 page not found";
   }).then(function(text){
+    var PREFIX = "```";
+    var SUFFIX = "```";
+    var reg = /```([\s\S]+?)```/gm;
+    var tuple = null;
+    var _text = text;
+    while(tuple = reg.exec(text)){
+      _text = _text.replace(tuple[0], PREFIX + tuple[1].replace(/\$/g, "_DOLLAR_") + SUFFIX);
+    }
+    return _text;
+  }).then(function(text){
     var PREFIX = "\n<pre><code class=\"lang-math\">";
     var SUFFIX = "</code></pre>\n";
     var reg = /\$\$([\s\S]+?)\$\$/gm;
@@ -85,7 +95,7 @@ function main(){
   }).then(function(text){
     var PREFIX = "<span class=\"lang-math-inline\">```";
     var SUFFIX = "```</span>";
-    var reg = /\$\$([^\r\n]+?)\$\$/g;
+    var reg = /\$([^\r\n]+?)\$/g;
     var _text = text;
     var tuple = null;
     while(tuple = reg.exec(text)){
@@ -94,6 +104,7 @@ function main(){
     return _text;
   }).then(function(text){
     var html = marked(text);
+    html = html.replace(/_DOLLAR_/g, "$");
     $("#content").html(html);
   }).then(function(){
     $(".lang-math-inline").map(function(i, elm){
